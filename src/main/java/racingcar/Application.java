@@ -4,7 +4,6 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Application {
-
     public static Car[] promptCarName(Scanner s) {
         Car[] cars;
         String[] car_names;
