@@ -1,5 +1,6 @@
 package racingcar;
 
+import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -27,15 +28,24 @@ public class Application {
     }
 
     public static int promptTrialCount(Scanner s) {
-        System.out.println("시도할 횟수는 몇회인가요?");
-        int T = -1;
-        try {
-            T = s.nextInt();
+        while (true) {
+            int T = -1;
+            try {
+                try {
+                    System.out.println("시도할 횟수는 몇회인가요?");
+                    T = s.nextInt();
+                }
+                catch (InputMismatchException e) {
+                    s.next();
+                    throw new IllegalArgumentException("[ERROR] 시도 횟수는 숫자여야 합니다.");
+                }
+            }
+            catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+                continue;
+            }
+            return T;
         }
-        catch (Exception e) {
-            throw new IllegalArgumentException("[ERROR] 시도 횟수는 숫자여야 합니다.");
-        }
-        return T;
     }
 
     public static void printRace(Car[] cars, int T) {
