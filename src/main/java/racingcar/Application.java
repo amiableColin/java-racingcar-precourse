@@ -9,15 +9,14 @@ public class Application {
     public static void main(String[] args) {
         Scanner s = new Scanner(System.in);
         String[] car_names;
+        Car[] cars;
         while (true) {
             System.out.println("경주할 자동차 이름을 입력하세요.(이름은 쉼표(,) 기준으로 구분)");
             car_names = s.next().split(",");
-
+            cars = new Car[car_names.length];
             try {
-                for (String car_name : car_names) {
-                    if (car_name.length() > 5) {
-                        throw new IllegalArgumentException("[ERROR] 자동차 이름은 5자 이하여야 합니다.");
-                    }
+                for (int i = 0; i < car_names.length; i++) {
+                    cars[i] = new Car(car_names[i]);
                 }
             }
             catch (IllegalArgumentException e) {
@@ -25,12 +24,6 @@ public class Application {
                 continue;
             }
             break;
-        }
-
-
-        Car[] cars = new Car[car_names.length];
-        for (int k = 0; k < cars.length; k++) {
-            cars[k] = new Car(car_names[k]);
         }
 
         System.out.println("시도할 횟수는 몇회인가요?");
