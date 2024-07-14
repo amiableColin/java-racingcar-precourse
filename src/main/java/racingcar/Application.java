@@ -39,30 +39,14 @@ public class Application {
 
         System.out.println("실행 결과");
         for (int i = 0; i < T; i++) {
-            for (Car car:cars) {
+            for (Car car : cars) {
                 car.isMove(r.nextInt(10));
                 System.out.println(car.getName() + " : " + car.getLine());
             }
             System.out.println();
         }
-        int[] maxs = new int[cars.length];
-        int max = 0;
-        for (int i = 0; i < cars.length; i++) {
-            maxs[i] = cars[i].getLine().length();
-            if (max < maxs[i]) {
-                max = maxs[i];
-            }
-        }
-        System.out.print("최종 우승자 : ");
-        String winner = "";
-        for (int i = 0; i < maxs.length; i++) {
-            if (max == maxs[i]) {
-                winner += cars[i].getName();
-                winner += ", ";
-            }
-        }
-        winner = winner.substring(0, winner.length() - 2);
-        System.out.println(winner);
+        WinnerFinder winner = new WinnerFinder(cars);
+        System.out.print("최종 우승자 : " + winner.findWinner());
         s.close();
     }
 }
