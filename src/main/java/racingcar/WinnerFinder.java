@@ -1,32 +1,24 @@
 package racingcar;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class WinnerFinder {
-    private Car[] cars;
+    private final Car[] cars;
 
     public WinnerFinder(Car[] cars) {
         this.cars = cars;
     }
 
     public String findWinner() {
-        int max = maxCount();
-        String winner = "";
-        for (int i = 0; i < this.cars.length; i++) {
-            if (max == this.cars[i].getLine().length()) {
-                winner += cars[i].getName();
-                winner += ", ";
-            }
-        }
-        winner = winner.substring(0, winner.length() - 2);
-        return winner;
+        return Arrays.stream(this.cars)
+                .filter(car -> car.getLine().length() == maxCount())
+                .map(Car::getName)
+                .collect(Collectors.joining(","));
     }
 
     private int maxCount() {
-        int max = 0;
-        for (int i = 0; i < this.cars.length; i++) {
-            if (max < this.cars[i].getLine().length()) {
-                max = this.cars[i].getLine().length();
-            }
-        }
-        return max;
+        return Arrays.stream(this.cars)
+                .mapToInt(car -> car.getLine().length())
+                .max().orElse(0);
     }
 }
