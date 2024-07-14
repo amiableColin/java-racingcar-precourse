@@ -8,8 +8,25 @@ public class Application {
     // 0~9 사이의 정수를 뽑고, 뽑은 수가 4 이상일 때 전진.
     public static void main(String[] args) {
         Scanner s = new Scanner(System.in);
-        System.out.println("경주할 자동차 이름을 입력하세요.(이름은 쉼표(,) 기준으로 구분)");
-        String[] car_names = s.next().split(",");
+        String[] car_names;
+        while (true) {
+            System.out.println("경주할 자동차 이름을 입력하세요.(이름은 쉼표(,) 기준으로 구분)");
+            car_names = s.next().split(",");
+
+            try {
+                for (String car_name : car_names) {
+                    if (car_name.length() > 5) {
+                        throw new IllegalArgumentException("[ERROR] 자동차 이름은 5자 이하여야 합니다.");
+                    }
+                }
+            }
+            catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+                continue;
+            }
+            break;
+        }
+
 
         Car[] cars = new Car[car_names.length];
         for (int k = 0; k < cars.length; k++) {
