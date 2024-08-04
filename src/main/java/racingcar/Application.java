@@ -1,48 +1,37 @@
 package racingcar;
-
-import java.util.InputMismatchException;
+import java.util.Arrays;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+
 
 public class Application {
     public static Car[] promptCarName(Scanner s) {
-        Car[] cars;
-        String[] car_names;
         while (true) {
             System.out.println("경주할 자동차 이름을 입력하세요.(이름은 쉼표(,) 기준으로 구분)");
-            car_names = s.next().split(",");
-            cars = new Car[car_names.length];
+            String[] car_names = s.next().split(",");
             try {
-                for (int i = 0; i < car_names.length; i++) {
-                    cars[i] = new Car(car_names[i]);
-                }
+                Car[] cars = Arrays.stream(car_names).map(Car::new).toArray(Car[]::new);
+                return cars;
             }
             catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
-                continue;
             }
-            break;
         }
-        return cars;
     }
 
     public static int promptTrialCount(Scanner s) {
         while (true) {
-            int T = -1;
+            System.out.println("시도할 횟수는 몇회인가요?");
+            String T = s.next();
             try {
-                try {
-                    System.out.println("시도할 횟수는 몇회인가요?");
-                    T = s.nextInt();
-                }
-                catch (InputMismatchException e) {
-                    s.next();
+                boolean isNumeric = T.chars().allMatch(Character::isDigit);
+                if (!isNumeric)
                     throw new IllegalArgumentException("[ERROR] 시도 횟수는 숫자여야 합니다.");
-                }
+                return Integer.parseInt(T);
             }
             catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
-                continue;
             }
-            return T;
         }
     }
 
@@ -50,9 +39,8 @@ public class Application {
         PlayingRace play = new PlayingRace(cars);
         for (int i = 0; i < T; i++) {
             play.raceStart();
-            for (Car car : cars) {
-                System.out.println(car.getName() + " : " + car.getLine());
-            }
+            String raceString = Arrays.stream(cars).map(car -> car.getName() + " : " + car.getLine()).collect(Collectors.joining("\n"));
+            System.out.println(raceString);
             System.out.println();
         }
     }
